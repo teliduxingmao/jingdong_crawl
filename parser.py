@@ -17,6 +17,7 @@ redis_pool = redis.ConnectionPool(host=REDIS_URI, port=REDIS_PORT,password = RED
 #用于爬取商品的评论数、
 url1 = 'https://club.jd.com/comment/productCommentSummaries.action?referenceIds={}'
 #用于获取商品价格
+#pduid是京东用来检查的时间戳，可自己增大数字，保证在爬取时间内不会过期
 url2 = 'https://p.3.cn/prices/mgets?type=1&skuIds=J_{}&pduid=1651620707'
 #用于获取商品名称
 url3 = 'https://item.jd.com/{}.html'
