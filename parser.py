@@ -2,6 +2,7 @@ from pyquery import PyQuery as pq
 from multiprocessing import Pool,Process
 import requests
 import re
+import time
 from gevent import monkey
 import gevent
 from json.decoder import JSONDecodeError
@@ -18,7 +19,7 @@ redis_pool = redis.ConnectionPool(host=REDIS_URI, port=REDIS_PORT,password = RED
 url1 = 'https://club.jd.com/comment/productCommentSummaries.action?referenceIds={}'
 #用于获取商品价格
 #pduid是京东用来检查的时间戳，可自己增大数字，保证在爬取时间内不会过期
-url2 = 'https://p.3.cn/prices/mgets?type=1&skuIds=J_{}&pduid=1651620707'
+url2 = 'https://p.3.cn/prices/mgets?type=1&skuIds=J_{id}&pduid={time}'
 #用于获取商品名称
 url3 = 'https://item.jd.com/{}.html'
 #用于获取商品店铺
@@ -68,7 +69,8 @@ class jingdong_parser(jingdong_spider):
     #获取商品价格，在另一个页面的json中，获取了原价和打折价
     def get_price(self,id):
         item = {}
-        url = url2.format(id)
+        time1 = str(int(time.time()))
+        url = url2.format(id = id,time = time1)
         res = self.get_page(url)
         res = json.loads(res)[0]
         item['price'] = res['p']
